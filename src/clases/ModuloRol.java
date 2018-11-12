@@ -1,6 +1,7 @@
 /*
- * Clase UsuarioRol
+ * Clase ModuloRol
  */
+
 package clases;
 
 import java.io.Serializable;
@@ -9,19 +10,19 @@ import java.io.Serializable;
  *
  * @author excz010715
  */
-public class UsuarioRol implements Serializable {
-
+public class ModuloRol implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private Integer idUsuario;
+    private Integer idModulo;
     private Integer idRol;
 
-    public UsuarioRol() {
+    public ModuloRol() {
     }
 
-    public UsuarioRol(Integer id, Integer idUsuario, Integer idRol) {
+    public ModuloRol(Integer id, Integer idModulo, Integer idRol) {
         this.id = id;
-        this.idUsuario = idUsuario;
+        this.idModulo = idModulo;
         this.idRol = idRol;
     }
 
@@ -33,12 +34,12 @@ public class UsuarioRol implements Serializable {
         this.id = id;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
+    public Integer getIdModulo() {
+        return idModulo;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdModulo(Integer idModulo) {
+        this.idModulo = idModulo;
     }
 
     public Integer getIdRol() {
@@ -51,7 +52,7 @@ public class UsuarioRol implements Serializable {
 
     @Override
     public String toString() {
-        return "UsuarioRol{" + "id=" + id + ", idUsuario=" + idUsuario + ", idRol=" + idRol + '}';
+        return "ModuloRol{" + "id=" + id + ", idModulo=" + idModulo + ", idRol=" + idRol + '}';
     }
-
+    
 }

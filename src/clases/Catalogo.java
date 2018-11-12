@@ -1,7 +1,6 @@
 /*
  * Clase Catalogo
  */
-
 package clases;
 
 import java.io.Serializable;
@@ -11,9 +10,9 @@ import java.io.Serializable;
  * @author excz010715
  */
 public class Catalogo implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private Integer id;
     private String codigo;
     private String nombre;
@@ -75,5 +74,5 @@ public class Catalogo implements Serializable {
     public String toString() {
         return "Catalogo{" + "id=" + id + ", codigo=" + codigo + ", nombre=" + nombre + ", descripcion=" + descripcion + ", estado=" + estado + '}';
     }
-    
+
 }

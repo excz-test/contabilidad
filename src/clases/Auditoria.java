@@ -1,7 +1,6 @@
 /*
  * Clase Auditoria
  */
-
 package clases;
 
 import java.io.Serializable;
@@ -12,9 +11,9 @@ import java.time.LocalTime;
  * @author excz010715
  */
 public class Auditoria implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private Integer id;
     private String texto;
     private String accion;
@@ -76,5 +75,5 @@ public class Auditoria implements Serializable {
     public String toString() {
         return "Auditoria{" + "id=" + id + ", texto=" + texto + ", accion=" + accion + ", fecha=" + fecha + ", usuario=" + usuario + '}';
     }
-    
+
 }

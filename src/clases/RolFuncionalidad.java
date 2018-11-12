@@ -1,7 +1,6 @@
 /*
  * Clase RolFuncionalidad
  */
-
 package clases;
 
 import java.io.Serializable;
@@ -11,7 +10,7 @@ import java.io.Serializable;
  * @author excz010715
  */
 public class RolFuncionalidad implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     private Integer id;
     private Integer idRol;
@@ -51,5 +50,5 @@ public class RolFuncionalidad implements Serializable {
     public String toString() {
         return "RolFuncionalidad{" + "id=" + id + ", idRol=" + idRol + ", idFuncionalidad=" + idFuncionalidad + '}';
     }
-    
+
 }
