@@ -12,18 +12,18 @@ import utilidades.ManejoArchivos;
  *
  * @author excz010715
  */
-public class CargaParametros {
+public class CargaParametros<T> {
 
-    private ArrayList<Usuario> listadoUsuario;
     ManejoArchivos<?> manejoArchivos;
+    private final Class<T> entidad;
     
-    public CargaParametros() {
-        listadoUsuario = new ArrayList<>();
+    public CargaParametros(final Class<T> entidad) {
+        this.entidad = entidad;        
     }
     
-    public ArrayList<Usuario> cargarUsuarios() {
-        manejoArchivos = new ManejoArchivos<>(Usuario.class);
-        return (ArrayList<Usuario>) manejoArchivos.obtenerListado();
+    public ArrayList<?> cargarDatos() {
+        manejoArchivos = new ManejoArchivos<>(entidad);
+        return (ArrayList<?>) (T) manejoArchivos.obtenerListado();
     }
     
     

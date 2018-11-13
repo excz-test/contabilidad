@@ -52,19 +52,19 @@ public class Dev {
             System.out.println(empresa.toString());
         }
         
-        CargaParametros cargaParametros = new CargaParametros();
+        /*CargaParametros cargaParametros = new CargaParametros();
         ArrayList<Usuario> listadoUsuarios = new ArrayList<>();
         listadoUsuarios = cargaParametros.cargarUsuarios();
         for (Usuario usuario : listadoUsuarios) {
             System.out.println("---->"+usuario.toString());
-        }
+        }*/
         
         ManejoArchivos<Auditoria> manejoArchivosAuditoria = new ManejoArchivos<>(Auditoria.class);
         manejoArchivosAuditoria.registrar(new Auditoria(1, "Auditando", "ACC", LocalTime.now(), new Usuario()));
         manejoArchivosAuditoria.registrar(new Auditoria(2, "Auditando 2", "DEL", LocalTime.now(), new Usuario()));
         
         ManejoArchivos<Catalogo> manejoArchivosCatalogo = new ManejoArchivos<>(Catalogo.class);
-        manejoArchivosCatalogo.registrar(new Catalogo(1, "PRO", "Provincias", "Provincias del Ecuador", "ACT"));
+        manejoArchivosCatalogo.registrar(new Catalogo(1, "PRO", "Provincias", "Provincias del Ecuador", "INA"));
         manejoArchivosCatalogo.registrar(new Catalogo(2, "EST", "Estado", "Estados", "ACT"));
         manejoArchivosCatalogo.registrar(new Catalogo(3, "CUE", "Cuentas", "Tipos de cuentas", "ACT"));
         manejoArchivosCatalogo.registrar(new Catalogo(4, "FDP", "FormaPago", "Formas de pago", "ACT"));

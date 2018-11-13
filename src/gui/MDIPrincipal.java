@@ -5,6 +5,11 @@
  */
 package gui;
 
+import clases.Catalogo;
+import clases.Usuario;
+import java.util.ArrayList;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
 import utilidades.Notificaciones;
 
 /**
@@ -13,11 +18,53 @@ import utilidades.Notificaciones;
  */
 public class MDIPrincipal extends javax.swing.JFrame {
 
+    private jpfAdministracion objAdministracion = new jpfAdministracion();
+    private jpfInventario objInventario = new jpfInventario();
+    private jpfPagos objPagos = new jpfPagos();
+    private jpfVentas objVentas = new jpfVentas();
+    private jpfLibro objLibro = new jpfLibro();
+    private jpfReportes objReportes = new jpfReportes();
+    
+    private ArrayList<Catalogo> catalogos;
+
     /**
      * Creates new form MDIPrincipal
      */
     public MDIPrincipal() {
+        catalogos = new ArrayList<>();
         initComponents();
+        inicializarFormularios();
+    }
+
+    public void inicializarFormularios() {
+        configurarPantalla(jifAdministracion, objAdministracion, "Administracion");
+        configurarPantalla(jifInventario, objInventario, "Inventario");
+        configurarPantalla(jifPagos, objPagos, "Pagos");
+        configurarPantalla(jifVentas, objVentas, "Ventas");
+        configurarPantalla(jifLibro, objLibro, "Libro diario");
+        configurarPantalla(jifReportes, objReportes, "Reportes");
+        
+        
+        /*jifAdministracion.setContentPane(objAdministracion);
+        objAdministracion.setSize(300, 300);
+        jifAdministracion.setSize(300, 300);
+        jifAdministracion.setClosable(true);
+
+        jifInventario.setContentPane(objInventario);
+        objInventario.setSize(300, 300);
+        jifInventario.setSize(300, 300);
+        jifInventario.setClosable(true);*/
+    }
+    
+    public void configurarPantalla(JInternalFrame jif, JPanel panel, String titulo) {
+        //setExtendedState(MAXIMIZED_BOTH);
+        jif.setContentPane(panel);
+        panel.setSize(300,300);
+        
+            //jif.setMaximum(true);
+            jif.setTitle(titulo);
+       
+        jif.setClosable(true);
     }
 
     /**
@@ -30,12 +77,18 @@ public class MDIPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         desktopPane = new javax.swing.JDesktopPane();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnAdministracion = new javax.swing.JButton();
+        btnInventario = new javax.swing.JButton();
+        btnPagos = new javax.swing.JButton();
+        btnventas = new javax.swing.JButton();
+        btnLibroDiario = new javax.swing.JButton();
+        btnReportes = new javax.swing.JButton();
+        jifAdministracion = new javax.swing.JInternalFrame();
+        jifInventario = new javax.swing.JInternalFrame();
+        jifPagos = new javax.swing.JInternalFrame();
+        jifVentas = new javax.swing.JInternalFrame();
+        jifLibro = new javax.swing.JInternalFrame();
+        jifReportes = new javax.swing.JInternalFrame();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -45,29 +98,161 @@ public class MDIPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Administración");
-        desktopPane.add(jButton1);
-        jButton1.setBounds(710, 190, 130, 40);
+        btnAdministracion.setText("Administración");
+        btnAdministracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdministracionActionPerformed(evt);
+            }
+        });
+        desktopPane.add(btnAdministracion);
+        btnAdministracion.setBounds(710, 190, 130, 40);
 
-        jButton2.setText("Inventario");
-        desktopPane.add(jButton2);
-        jButton2.setBounds(160, 120, 130, 40);
+        btnInventario.setText("Inventario");
+        btnInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInventarioActionPerformed(evt);
+            }
+        });
+        desktopPane.add(btnInventario);
+        btnInventario.setBounds(160, 120, 130, 40);
 
-        jButton3.setText("Pagos");
-        desktopPane.add(jButton3);
-        jButton3.setBounds(160, 190, 130, 40);
+        btnPagos.setText("Pagos");
+        btnPagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagosActionPerformed(evt);
+            }
+        });
+        desktopPane.add(btnPagos);
+        btnPagos.setBounds(160, 190, 130, 40);
 
-        jButton4.setText("Ventas");
-        desktopPane.add(jButton4);
-        jButton4.setBounds(160, 260, 130, 40);
+        btnventas.setText("Ventas");
+        btnventas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnventasActionPerformed(evt);
+            }
+        });
+        desktopPane.add(btnventas);
+        btnventas.setBounds(160, 260, 130, 40);
 
-        jButton5.setText("Libro Diario");
-        desktopPane.add(jButton5);
-        jButton5.setBounds(160, 330, 130, 40);
+        btnLibroDiario.setText("Libro Diario");
+        btnLibroDiario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLibroDiarioActionPerformed(evt);
+            }
+        });
+        desktopPane.add(btnLibroDiario);
+        btnLibroDiario.setBounds(160, 330, 130, 40);
 
-        jButton6.setText("Reportes");
-        desktopPane.add(jButton6);
-        jButton6.setBounds(710, 120, 130, 40);
+        btnReportes.setText("Reportes");
+        btnReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportesActionPerformed(evt);
+            }
+        });
+        desktopPane.add(btnReportes);
+        btnReportes.setBounds(710, 120, 130, 40);
+
+        jifAdministracion.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jifAdministracion.setVisible(false);
+
+        javax.swing.GroupLayout jifAdministracionLayout = new javax.swing.GroupLayout(jifAdministracion.getContentPane());
+        jifAdministracion.getContentPane().setLayout(jifAdministracionLayout);
+        jifAdministracionLayout.setHorizontalGroup(
+            jifAdministracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jifAdministracionLayout.setVerticalGroup(
+            jifAdministracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        desktopPane.add(jifAdministracion);
+        jifAdministracion.setBounds(40, 40, 1120, 530);
+
+        jifInventario.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jifInventario.setVisible(false);
+
+        javax.swing.GroupLayout jifInventarioLayout = new javax.swing.GroupLayout(jifInventario.getContentPane());
+        jifInventario.getContentPane().setLayout(jifInventarioLayout);
+        jifInventarioLayout.setHorizontalGroup(
+            jifInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jifInventarioLayout.setVerticalGroup(
+            jifInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        desktopPane.add(jifInventario);
+        jifInventario.setBounds(390, 230, 22, 40);
+
+        jifPagos.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jifPagos.setVisible(false);
+
+        javax.swing.GroupLayout jifPagosLayout = new javax.swing.GroupLayout(jifPagos.getContentPane());
+        jifPagos.getContentPane().setLayout(jifPagosLayout);
+        jifPagosLayout.setHorizontalGroup(
+            jifPagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jifPagosLayout.setVerticalGroup(
+            jifPagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        desktopPane.add(jifPagos);
+        jifPagos.setBounds(390, 230, 22, 40);
+
+        jifVentas.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jifVentas.setVisible(false);
+
+        javax.swing.GroupLayout jifVentasLayout = new javax.swing.GroupLayout(jifVentas.getContentPane());
+        jifVentas.getContentPane().setLayout(jifVentasLayout);
+        jifVentasLayout.setHorizontalGroup(
+            jifVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jifVentasLayout.setVerticalGroup(
+            jifVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        desktopPane.add(jifVentas);
+        jifVentas.setBounds(390, 230, 22, 40);
+
+        jifLibro.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jifLibro.setVisible(false);
+
+        javax.swing.GroupLayout jifLibroLayout = new javax.swing.GroupLayout(jifLibro.getContentPane());
+        jifLibro.getContentPane().setLayout(jifLibroLayout);
+        jifLibroLayout.setHorizontalGroup(
+            jifLibroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jifLibroLayout.setVerticalGroup(
+            jifLibroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        desktopPane.add(jifLibro);
+        jifLibro.setBounds(390, 230, 22, 40);
+
+        jifReportes.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jifReportes.setVisible(false);
+
+        javax.swing.GroupLayout jifReportesLayout = new javax.swing.GroupLayout(jifReportes.getContentPane());
+        jifReportes.getContentPane().setLayout(jifReportesLayout);
+        jifReportesLayout.setHorizontalGroup(
+            jifReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jifReportesLayout.setVerticalGroup(
+            jifReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        desktopPane.add(jifReportes);
+        jifReportes.setBounds(390, 230, 22, 40);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("Archivo");
@@ -119,8 +304,32 @@ public class MDIPrincipal extends javax.swing.JFrame {
         if (Notificaciones.mensajeConfirmacion("Salir", "Esta seguro que desea salir del sistema?")) {
             System.exit(0);
         }
-        
+
     }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
+        jifInventario.setVisible(true);
+    }//GEN-LAST:event_btnInventarioActionPerformed
+
+    private void btnAdministracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministracionActionPerformed
+        jifAdministracion.setVisible(true);
+    }//GEN-LAST:event_btnAdministracionActionPerformed
+
+    private void btnPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagosActionPerformed
+        jifPagos.setVisible(true);
+    }//GEN-LAST:event_btnPagosActionPerformed
+
+    private void btnventasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnventasActionPerformed
+        jifVentas.setVisible(true);
+    }//GEN-LAST:event_btnventasActionPerformed
+
+    private void btnLibroDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLibroDiarioActionPerformed
+        jifLibro.setVisible(true);
+    }//GEN-LAST:event_btnLibroDiarioActionPerformed
+
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+        jifReportes.setVisible(true);
+    }//GEN-LAST:event_btnReportesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -159,17 +368,23 @@ public class MDIPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JButton btnAdministracion;
+    private javax.swing.JButton btnInventario;
+    private javax.swing.JButton btnLibroDiario;
+    private javax.swing.JButton btnPagos;
+    private javax.swing.JButton btnReportes;
+    private javax.swing.JButton btnventas;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JInternalFrame jifAdministracion;
+    private javax.swing.JInternalFrame jifInventario;
+    private javax.swing.JInternalFrame jifLibro;
+    private javax.swing.JInternalFrame jifPagos;
+    private javax.swing.JInternalFrame jifReportes;
+    private javax.swing.JInternalFrame jifVentas;
     private javax.swing.JMenuBar menuBar;
     // End of variables declaration//GEN-END:variables
 
