@@ -24,7 +24,7 @@ public class MDIPrincipal extends javax.swing.JFrame {
     private jpfVentas objVentas = new jpfVentas();
     private jpfLibro objLibro = new jpfLibro();
     private jpfReportes objReportes = new jpfReportes();
-    
+
     private ArrayList<Catalogo> catalogos;
 
     /**
@@ -43,8 +43,7 @@ public class MDIPrincipal extends javax.swing.JFrame {
         configurarPantalla(jifVentas, objVentas, "Ventas");
         configurarPantalla(jifLibro, objLibro, "Libro diario");
         configurarPantalla(jifReportes, objReportes, "Reportes");
-        
-        
+
         /*jifAdministracion.setContentPane(objAdministracion);
         objAdministracion.setSize(300, 300);
         jifAdministracion.setSize(300, 300);
@@ -55,15 +54,17 @@ public class MDIPrincipal extends javax.swing.JFrame {
         jifInventario.setSize(300, 300);
         jifInventario.setClosable(true);*/
     }
-    
+
     public void configurarPantalla(JInternalFrame jif, JPanel panel, String titulo) {
         //setExtendedState(MAXIMIZED_BOTH);
         jif.setContentPane(panel);
-        panel.setSize(300,300);
-        
-            //jif.setMaximum(true);
-            jif.setTitle(titulo);
-       
+        panel.setSize(300, 300);
+
+        //jif.setMaximum(true);
+        jif.setTitle(titulo);
+        jif.setResizable(true);
+        jif.setMaximizable(true);
+
         jif.setClosable(true);
     }
 

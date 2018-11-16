@@ -6,9 +6,17 @@
 package gui;
 
 import clases.Catalogo;
+import clases.ItemCatalogo;
 import java.util.ArrayList;
-import javax.swing.ListModel;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import servicios.CargaParametros;
+import utilidades.ManejoArchivos;
+import utilidades.Notificaciones;
 
 /**
  *
@@ -17,8 +25,13 @@ import servicios.CargaParametros;
 public class jpfAdministracion extends javax.swing.JPanel {
 
     private ArrayList<Catalogo> catalogos;
+    private ArrayList<ItemCatalogo> itemCatalogos;
+    private ArrayList<ItemCatalogo> itemCatalogo;
     CargaParametros<Catalogo> cargaParamCatalogo = new CargaParametros<>(Catalogo.class);
+    CargaParametros<ItemCatalogo> cargaParamItemCat = new CargaParametros<>(ItemCatalogo.class);
+    ManejoArchivos<Catalogo> manejoArchivoCat;
     private int indice;
+    private String codigoCatalogo;
 
     /**
      * Creates new form jpfAdministracion
@@ -26,32 +39,75 @@ public class jpfAdministracion extends javax.swing.JPanel {
     public jpfAdministracion() {
         initComponents();
         catalogos = new ArrayList<>();
-        catalogos = (ArrayList<Catalogo>) cargaParamCatalogo.cargarDatos();
-        mostrarCatatalogos();
+        itemCatalogos = new ArrayList<>();
+        manejoArchivoCat = new ManejoArchivos<>(Catalogo.class);
+        mostrarCatalogos();
     }
 
-    public void mostrarCatatalogos() {
+    public final void mostrarCatalogos() {
+        catalogos = (ArrayList<Catalogo>) cargaParamCatalogo.cargarDatos();
         String[] array = new String[catalogos.size()];
         for (int i = 0; i < array.length; i++) {
             array[i] = catalogos.get(i).getNombre();
         }
         jListCatalogos.setListData(array);
     }
-    
+
     public void editarCatalogo(int indice) {
+        this.btnNuevoCatalogo.setEnabled(false);
+        this.btnEliminarCat.setEnabled(true);
         Catalogo catalogo = new Catalogo();
+        //Asignación de catalogo
         catalogo = catalogos.get(indice);
-        
+        //Asignación de código para cargar Items parámetros
+        setCodigoCatalogo(catalogo.getCodigo());
+
         this.txtId.setText(catalogo.getId().toString());
         this.txtCodigo.setText(catalogo.getCodigo());
-        this.txtNombre.setText(catalogo.getCodigo());
+        this.txtNombre.setText(catalogo.getNombre());
         this.txtDescripcion.setText(catalogo.getDescripcion());
         boolean estado = false;
         if (catalogo.getEstado().equals("ACT")) {
             estado = true;
         }
         this.chkEstado.setSelected(estado);
-        
+        cargarItemsCatalogo();
+
+    }
+
+    /**
+     * Presenta items de una catálogo
+     */
+    public void cargarItemsCatalogo() {
+        itemCatalogos = (ArrayList<ItemCatalogo>) cargaParamItemCat.cargarDatos();
+        itemCatalogo = new ArrayList<>();
+        for (ItemCatalogo item : itemCatalogos) {
+            if (codigoCatalogo.equals(item.getCodigo())) {
+                itemCatalogo.add(item);
+            }
+        }
+        String[][] arrayCatalogo = new String[itemCatalogo.size()][5];
+        for (int i = 0; i < itemCatalogo.size(); i++) {
+            arrayCatalogo[i][0] = itemCatalogo.get(i).getId().toString();
+            arrayCatalogo[i][1] = itemCatalogo.get(i).getCodigo();
+            arrayCatalogo[i][2] = itemCatalogo.get(i).getNombre();
+            arrayCatalogo[i][3] = itemCatalogo.get(i).getDescripcion();
+            arrayCatalogo[i][4] = itemCatalogo.get(i).getEstado();
+        }
+        jTableItemsCatalogo.setModel(new DefaultTableModel(
+                arrayCatalogo,
+                new String[]{
+                    "Item Nro.", "Código catálogo", "Nombre", "Descripción", "Estado"
+                }
+        ));
+    }
+
+    private void limpiarCampos() {
+        this.txtCodigo.setText(null);
+        this.txtId.setText(null);
+        this.txtNombre.setText(null);
+        this.txtDescripcion.setText(null);
+        this.chkEstado.setSelected(false);
     }
 
     public int getIndice() {
@@ -60,6 +116,14 @@ public class jpfAdministracion extends javax.swing.JPanel {
 
     public void setIndice(int indice) {
         this.indice = indice;
+    }
+
+    public String getCodigoCatalogo() {
+        return codigoCatalogo;
+    }
+
+    public void setCodigoCatalogo(String codigoCatalogo) {
+        this.codigoCatalogo = codigoCatalogo;
     }
 
     /**
@@ -87,23 +151,19 @@ public class jpfAdministracion extends javax.swing.JPanel {
         lbl5 = new java.awt.Label();
         chkEstado = new javax.swing.JCheckBox();
         btnNuevoCatalogo = new javax.swing.JButton();
-        btnNuevoCatalogo1 = new javax.swing.JButton();
-        btnNuevoCatalogo2 = new javax.swing.JButton();
+        btnModCat = new javax.swing.JButton();
+        btnEliminarCat = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableItemsCatalogo = new javax.swing.JTable();
+        btnDeleteItem = new java.awt.Button();
+        btnAddItem = new java.awt.Button();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
 
-        jListCatalogos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jListCatalogos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jListCatalogosMouseClicked(evt);
@@ -113,15 +173,15 @@ public class jpfAdministracion extends javax.swing.JPanel {
 
         panel1.setName("Editar"); // NOI18N
 
-        lbl1.setText("Id");
+        lbl1.setText("*Id");
 
-        lbl2.setText("Código");
+        lbl2.setText("*Código");
 
-        lbl3.setText("Nombre");
+        lbl3.setText("*Nombre");
 
         lbl4.setText("Descripción");
 
-        lbl5.setText("Estado");
+        lbl5.setText("*Estado");
 
         chkEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,21 +190,27 @@ public class jpfAdministracion extends javax.swing.JPanel {
         });
 
         btnNuevoCatalogo.setText("Nuevo");
-
-        btnNuevoCatalogo1.setText("Modificar");
-        btnNuevoCatalogo1.addActionListener(new java.awt.event.ActionListener() {
+        btnNuevoCatalogo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoCatalogo1ActionPerformed(evt);
+                btnNuevoCatalogoActionPerformed(evt);
             }
         });
 
-        btnNuevoCatalogo2.setText("Modificar");
-        btnNuevoCatalogo2.addActionListener(new java.awt.event.ActionListener() {
+        btnModCat.setText("Modificar");
+        btnModCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoCatalogo2ActionPerformed(evt);
+                btnModCatActionPerformed(evt);
             }
         });
 
+        btnEliminarCat.setText("Eliminar");
+        btnEliminarCat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarCatActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel3.setText("Edición de catálogos");
 
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
@@ -156,37 +222,40 @@ public class jpfAdministracion extends javax.swing.JPanel {
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(chkEstado)))
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbl4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbl3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbl2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbl1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(chkEstado)))
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                         .addContainerGap(23, Short.MAX_VALUE)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                                 .addComponent(btnNuevoCatalogo)
                                 .addGap(6, 6, 6)
-                                .addComponent(btnNuevoCatalogo1)
+                                .addComponent(btnModCat)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnNuevoCatalogo2))
+                                .addComponent(btnEliminarCat))
                             .addComponent(txtId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(76, 76, 76)))))
+                            .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -211,24 +280,15 @@ public class jpfAdministracion extends javax.swing.JPanel {
                 .addGap(10, 10, 10)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(btnNuevoCatalogo)
-                    .addComponent(btnNuevoCatalogo1)
-                    .addComponent(btnNuevoCatalogo2))
+                    .addComponent(btnModCat)
+                    .addComponent(btnEliminarCat))
                 .addGap(9, 9, 9))
         );
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel1.setText("Listado catálogos disponibles:");
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 706, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel4.setText("Items de catálogo:");
 
         jTableItemsCatalogo.setModel(new javax.swing.table.DefaultTableModel(
@@ -239,7 +299,20 @@ public class jpfAdministracion extends javax.swing.JPanel {
 
             }
         ));
+        jTableItemsCatalogo.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(jTableItemsCatalogo);
+        jTableItemsCatalogo.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        btnDeleteItem.setEnabled(false);
+        btnDeleteItem.setLabel("-");
+
+        btnAddItem.setEnabled(false);
+        btnAddItem.setLabel("+");
+        btnAddItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddItemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -247,19 +320,25 @@ public class jpfAdministracion extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3))
-                    .addComponent(jLabel1))
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel1)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel4)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAddItem, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                            .addComponent(btnDeleteItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(61, 61, 61))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,14 +349,17 @@ public class jpfAdministracion extends javax.swing.JPanel {
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAddItem, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDeleteItem, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(80, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
 
         panel1.getAccessibleContext().setAccessibleName("");
@@ -288,11 +370,11 @@ public class jpfAdministracion extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1513, Short.MAX_VALUE)
+            .addGap(0, 1175, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 518, Short.MAX_VALUE)
+            .addGap(0, 565, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("", jPanel2);
@@ -303,47 +385,49 @@ public class jpfAdministracion extends javax.swing.JPanel {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1513, Short.MAX_VALUE)
+            .addGap(0, 1175, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 518, Short.MAX_VALUE)
+            .addGap(0, 565, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("", jPanel3);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Control general de parámetros y catálogos del sistema de Contabilidad");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(232, 232, 232)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(339, 339, 339))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
-                .addGap(45, 45, 45))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(21, 21, 21)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane1)
-                .addGap(14, 14, 14))
+                .addComponent(jTabbedPane1))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNuevoCatalogo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCatalogo2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnNuevoCatalogo2ActionPerformed
+    private void btnEliminarCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarCatActionPerformed
+        Notificaciones.mensajeInformativo("Hiii");
 
-    private void btnNuevoCatalogo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCatalogo1ActionPerformed
+    }//GEN-LAST:event_btnEliminarCatActionPerformed
+
+    private void btnModCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModCatActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnNuevoCatalogo1ActionPerformed
+    }//GEN-LAST:event_btnModCatActionPerformed
 
     private void chkEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkEstadoActionPerformed
         // TODO add your handling code here:
@@ -352,13 +436,55 @@ public class jpfAdministracion extends javax.swing.JPanel {
     private void jListCatalogosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListCatalogosMouseClicked
         setIndice(jListCatalogos.getSelectedIndex());
         editarCatalogo(getIndice());
+        this.btnAddItem.setEnabled(true);
+        this.btnDeleteItem.setEnabled(true);
     }//GEN-LAST:event_jListCatalogosMouseClicked
+
+    private void agregarItemCatalgo(int idCatalogo) {
+        JTextField field1 = new JTextField();
+        JTextField field2 = new JPasswordField();
+        Object[] fields = {
+            "Nombre", field1,
+            "Password", field2
+        };
+        JOptionPane.showConfirmDialog(null, fields, "Agregar item a catalogo", JOptionPane.OK_CANCEL_OPTION);
+    }
+    private void btnNuevoCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCatalogoActionPerformed
+        int id = 0;
+        if ("".equals(this.txtId.getText())
+                || "".equals(this.txtCodigo.getText())
+                || "".equals(this.txtNombre.getText())) {
+            Notificaciones.mensajeInformativo("Los campos son obligatorios");
+        } else {
+            try {
+                id = Integer.parseInt(this.txtId.getText());
+                String codigoCat = this.txtCodigo.getText();
+                String nombreCat = this.txtNombre.getText();
+                String descripcionCat = this.txtDescripcion.getText();
+                String estadoCat = this.chkEstado.equals(true) ? "ACT" : "INA";
+                Catalogo catalogo = new Catalogo(id, codigoCat, nombreCat, descripcionCat, estadoCat);
+                //System.err.println(catalogo.toString());
+                manejoArchivoCat.registrar(catalogo);
+                mostrarCatalogos();
+                limpiarCampos();
+            } catch (NumberFormatException e) {
+                Notificaciones.mensajeInformativo("El id del catálogo debe ser un número");
+                System.err.println("Error al convertir a número. " + Arrays.toString(e.getStackTrace()));
+            }
+        }
+    }//GEN-LAST:event_btnNuevoCatalogoActionPerformed
+
+    private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
+        agregarItemCatalgo(jListCatalogos.getSelectedIndex());
+    }//GEN-LAST:event_btnAddItemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.awt.Button btnAddItem;
+    private java.awt.Button btnDeleteItem;
+    private javax.swing.JButton btnEliminarCat;
+    private javax.swing.JButton btnModCat;
     private javax.swing.JButton btnNuevoCatalogo;
-    private javax.swing.JButton btnNuevoCatalogo1;
-    private javax.swing.JButton btnNuevoCatalogo2;
     private javax.swing.JCheckBox chkEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -368,7 +494,6 @@ public class jpfAdministracion extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -384,4 +509,5 @@ public class jpfAdministracion extends javax.swing.JPanel {
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+
 }

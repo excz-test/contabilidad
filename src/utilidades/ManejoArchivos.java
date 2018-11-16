@@ -79,4 +79,9 @@ public class ManejoArchivos<T> {
         return listado;
     }
     
+    public boolean deleteArchivo(){
+        File file = new File (entidad.getClass().getSimpleName()+".txt");
+        return file.delete();
+    }
+    
 }

@@ -22,5 +22,7 @@ public final class Notificaciones {
         
     }
     
+    //public static Object inputDialog(Strint titulo, )
+    
     
 }
