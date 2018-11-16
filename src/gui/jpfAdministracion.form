@@ -245,6 +245,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtId">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="java.awt.Label" name="lbl2">
                   <Properties>
@@ -252,6 +255,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtCodigo">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="java.awt.Label" name="lbl3">
                   <Properties>
@@ -259,8 +265,14 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtNombre">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtDescripcion">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="java.awt.Label" name="lbl4">
                   <Properties>
@@ -273,6 +285,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkEstado">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkEstadoActionPerformed"/>
                   </Events>

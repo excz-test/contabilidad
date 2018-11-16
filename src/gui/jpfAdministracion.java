@@ -8,10 +8,9 @@ package gui;
 import clases.Catalogo;
 import clases.ItemCatalogo;
 import java.util.ArrayList;
-import java.util.Arrays;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import servicios.CargaParametros;
@@ -32,6 +31,7 @@ public class jpfAdministracion extends javax.swing.JPanel {
     ManejoArchivos<Catalogo> manejoArchivoCat;
     private int indice;
     private String codigoCatalogo;
+    jfNuevo jfData;
 
     /**
      * Creates new form jpfAdministracion
@@ -42,6 +42,7 @@ public class jpfAdministracion extends javax.swing.JPanel {
         itemCatalogos = new ArrayList<>();
         manejoArchivoCat = new ManejoArchivos<>(Catalogo.class);
         mostrarCatalogos();
+        jfData = new jfNuevo();
     }
 
     public final void mostrarCatalogos() {
@@ -54,7 +55,7 @@ public class jpfAdministracion extends javax.swing.JPanel {
     }
 
     public void editarCatalogo(int indice) {
-        this.btnNuevoCatalogo.setEnabled(false);
+        this.btnNuevoCatalogo.setEnabled(true);
         this.btnEliminarCat.setEnabled(true);
         Catalogo catalogo = new Catalogo();
         //Asignación de catalogo
@@ -175,14 +176,23 @@ public class jpfAdministracion extends javax.swing.JPanel {
 
         lbl1.setText("*Id");
 
+        txtId.setEnabled(false);
+
         lbl2.setText("*Código");
 
+        txtCodigo.setEnabled(false);
+
         lbl3.setText("*Nombre");
+
+        txtNombre.setEnabled(false);
+
+        txtDescripcion.setEnabled(false);
 
         lbl4.setText("Descripción");
 
         lbl5.setText("*Estado");
 
+        chkEstado.setEnabled(false);
         chkEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkEstadoActionPerformed(evt);
@@ -450,6 +460,15 @@ public class jpfAdministracion extends javax.swing.JPanel {
         JOptionPane.showConfirmDialog(null, fields, "Agregar item a catalogo", JOptionPane.OK_CANCEL_OPTION);
     }
     private void btnNuevoCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCatalogoActionPerformed
+        jfData.setVisible(true);
+        jfData.pack();
+        jfData.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jfData.setLocationRelativeTo(null);
+        jfData.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        //jfData.setName("Nuevo Catálogo");
+        jfData.setResizable(false);
+        /*
+        Catalogo catNuevo = new Catalogo();
         int id = 0;
         if ("".equals(this.txtId.getText())
                 || "".equals(this.txtCodigo.getText())
@@ -471,7 +490,7 @@ public class jpfAdministracion extends javax.swing.JPanel {
                 Notificaciones.mensajeInformativo("El id del catálogo debe ser un número");
                 System.err.println("Error al convertir a número. " + Arrays.toString(e.getStackTrace()));
             }
-        }
+        }*/
     }//GEN-LAST:event_btnNuevoCatalogoActionPerformed
 
     private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
