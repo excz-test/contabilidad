@@ -175,7 +175,6 @@ public class jfNuevo extends javax.swing.JFrame {
                 Catalogo catalogo = new Catalogo(id, codigoCat, nombreCat, descripcionCat, estadoCat);
                 //System.err.println(catalogo.toString());
                 manejoArchivoCat.registrar(catalogo);
-
                 setVisible(false);
 
             } catch (NumberFormatException e) {

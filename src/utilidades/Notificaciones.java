@@ -22,7 +22,9 @@ public final class Notificaciones {
         
     }
     
-    //public static Object inputDialog(Strint titulo, )
+    public static String inputDialog(String mensaje) {
+        return JOptionPane.showInputDialog(mensaje);
+    }
     
     
 }

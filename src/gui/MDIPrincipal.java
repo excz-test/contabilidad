@@ -37,6 +37,7 @@ public class MDIPrincipal extends javax.swing.JFrame {
     }
 
     public void inicializarFormularios() {
+        setTitle("Sistema de Contabilidad");
         configurarPantalla(jifAdministracion, objAdministracion, "Administracion");
         configurarPantalla(jifInventario, objInventario, "Inventario");
         configurarPantalla(jifPagos, objPagos, "Pagos");
